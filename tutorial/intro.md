@@ -13,7 +13,7 @@ In diesem Tutorial erfahren Sie, wie Sie eine python-django-Web-App erstellen, d
 Bevor Sie mit diesem Lernprogramm beginnen, sollten Sie [python](https://www.python.org/) (mit [PIP](https://pypi.org/project/pip/)) auf dem Entwicklungscomputer installiert haben. Wenn Sie nicht über python verfügen, besuchen Sie den vorherigen Link für Downloadoptionen.
 
 > [!NOTE]
-> Dieses Tutorial wurde mit Python-Version 3.7.0 und Django Version 2,1 geschrieben. Die Schritte in diesem Handbuch funktionieren möglicherweise mit anderen Versionen, jedoch nicht getestet.
+> Dieses Tutorial wurde mit Python-Version 3.7.0 und Django Version 2,2 geschrieben. Die Schritte in diesem Handbuch funktionieren möglicherweise mit anderen Versionen, jedoch nicht getestet.
 
 ## <a name="feedback"></a>Feedback
 
