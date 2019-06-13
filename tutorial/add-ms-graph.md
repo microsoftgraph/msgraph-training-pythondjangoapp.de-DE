@@ -1,6 +1,6 @@
 <!-- markdownlint-disable MD002 MD041 -->
 
-In dieser Übung integrieren Sie Microsoft Graph in die Anwendung. Für diese Anwendung verwenden Sie die Requests [-OAuthlib-](https://requests-oauthlib.readthedocs.io/en/latest/) Bibliothek, um Aufrufe von Microsoft Graph zu tätigen.
+In dieser Übung werden Sie das Microsoft Graph in die Anwendung integrieren. Für diese Anwendung verwenden Sie die Requests [-OAuthlib-](https://requests-oauthlib.readthedocs.io/en/latest/) Bibliothek, um Anrufe an Microsoft Graph zu tätigen.
 
 ## <a name="get-calendar-events-from-outlook"></a>Abrufen von Kalenderereignissen aus Outlook
 
@@ -23,13 +23,13 @@ def get_calendar_events(token):
   return events.json()
 ```
 
-Überlegen Sie sich, was dieser Code tut.
+Überprüfen Sie, was dieser Code tut.
 
-- Die URL, die aufgerufen wird, `/v1.0/me/events`lautet.
-- Der `$select` Parameter schränkt die für jedes Ereignis zurückgegebenen Felder auf diejenigen ein, die die Ansicht tatsächlich verwendet.
-- Der `$orderby` Parameter sortiert die Ergebnisse nach dem Datum und der Uhrzeit, zu denen Sie erstellt wurden, wobei das neueste Element zuerst angezeigt wird.
+- Die URL, die aufgerufen wird `/v1.0/me/events`.
+- Der `$select` Parameter schränkt die für die einzelnen Ereignisse zurückgegebenen Felder auf diejenigen ein, die von der Ansicht tatsächlich verwendet werden.
+- Der `$orderby` Parameter sortiert die Ergebnisse nach dem Datum und der Uhrzeit, zu der Sie erstellt wurden, wobei das letzte Element zuerst angezeigt wird.
 
-Erstellen Sie nun eine Kalenderansicht. Ändern Sie zunächst `from tutorial.graph_helper import get_user` die folgende Codezeile.
+Erstellen Sie jetzt eine Kalenderansicht. Ändern `./tutorial/views.py`Sie in zunächst die `from tutorial.graph_helper import get_user` -Reihe in die folgende.
 
 ```python
 from tutorial.graph_helper import get_user, get_calendar_events
@@ -58,17 +58,17 @@ Aktualisieren `./tutorial/urls.py` , um diese neue Ansicht hinzuzufügen.
 path('calendar', views.calendar, name='calendar'),
 ```
 
-Aktualisieren Sie schließlich den Link **Kalender** in `./tutorial/templates/tutorial/layout.html` , um mit dieser Ansicht zu verknüpfen. Ersetzen Sie `<a class="nav-link{% if request.resolver_match.view_name == 'calendar' %} active{% endif %}" href="#">Calendar</a>` die-Reihe durch Folgendes.
+Aktualisieren Sie schließlich den **Kalender** Link in `./tutorial/templates/tutorial/layout.html` , um eine Verknüpfung mit dieser Ansicht aufzurufen. Ersetzen Sie `<a class="nav-link{% if request.resolver_match.view_name == 'calendar' %} active{% endif %}" href="#">Calendar</a>` die-Verbindung durch Folgendes.
 
 ```html
 <a class="nav-link{% if request.resolver_match.view_name == 'calendar' %} active{% endif %}" href="{% url 'calendar' %}">Calendar</a>
 ```
 
-Jetzt können Sie dies testen. Melden Sie sich an, und klicken Sie in der Navigationsleiste auf den Link **Kalender** . Wenn alles funktioniert, sollte ein JSON-Dump von Ereignissen im Kalender des Benutzers angezeigt werden.
+Nun können Sie dies testen. Melden Sie sich an, und klicken Sie in der Navigationsleiste auf den Link **Kalender** . Wenn alles funktioniert, sollte ein JSON-Abbild der Ereignisse im Kalender des Benutzers angezeigt werden.
 
 ## <a name="display-the-results"></a>Anzeigen der Ergebnisse
 
-Jetzt können Sie eine Vorlage hinzufügen, um die Ergebnisse benutzerfreundlicher anzuzeigen. Erstellen Sie eine neue Datei im `./tutorial/templates/tutorial` Verzeichnis mit `calendar.html` dem Namen, und fügen Sie den folgenden Code hinzu.
+Jetzt können Sie eine Vorlage hinzufügen, um die Ergebnisse auf eine benutzerfreundlichere Weise anzuzeigen. Erstellen Sie eine neue Datei im `./tutorial/templates/tutorial` Verzeichnis mit `calendar.html` dem Namen, und fügen Sie den folgenden Code hinzu.
 
 ```html
 {% extends "tutorial/layout.html" %}
@@ -99,7 +99,7 @@ Jetzt können Sie eine Vorlage hinzufügen, um die Ergebnisse benutzerfreundlich
 {% endblock %}
 ```
 
-, Der eine Auflistung von Ereignissen durchläuft und jeweils eine Tabellenzeile hinzufügt. Fügen Sie die `import` folgende Anweisung am Anfang der `./tutorials/views.py` Datei hinzu.
+Dadurch wird eine Auflistung von Ereignissen durchlaufen und für jeden eine Tabellenzeile hinzugefügt. Fügen Sie die `import` folgende Anweisung am Anfang der `./tutorials/views.py` Datei hinzu.
 
 ```python
 import dateutil.parser
@@ -129,4 +129,4 @@ def calendar(request):
 
 Aktualisieren Sie die Seite, und die APP sollte jetzt eine Tabelle mit Ereignissen rendern.
 
-![Screenshot der Ereignistabelle](./images/add-msgraph-01.png)
+![Ein Screenshot der Ereignistabelle](./images/add-msgraph-01.png)

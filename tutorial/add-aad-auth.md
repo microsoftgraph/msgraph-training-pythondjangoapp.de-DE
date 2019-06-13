@@ -1,8 +1,8 @@
 <!-- markdownlint-disable MD002 MD041 -->
 
-In dieser Übung erweitern Sie die Anwendung aus der vorherigen Übung zur Unterstützung der Authentifizierung mit Azure AD. Dies ist erforderlich, um das erforderliche OAuth-Zugriffstoken für den Aufruf von Microsoft Graph abzurufen. In diesem Schritt integrieren Sie die Requests [-OAuthlib-](https://requests-oauthlib.readthedocs.io/en/latest/) Bibliothek in die Anwendung.
+In dieser Übung erweitern Sie die Anwendung aus der vorherigen Übung, um die Authentifizierung mit Azure AD zu unterstützen. Dies ist erforderlich, um das erforderliche OAuth-Zugriffstoken zum Aufrufen von Microsoft Graph zu erhalten. In diesem Schritt integrieren Sie die Requests [-OAuthlib-](https://requests-oauthlib.readthedocs.io/en/latest/) Bibliothek in die Anwendung.
 
-Erstellen Sie eine neue Datei im Stamm des Projekts mit dem `oauth_settings.yml`Namen, und fügen Sie den folgenden Inhalt hinzu.
+Erstellen Sie eine neue Datei im Stammverzeichnis des Projekts mit `oauth_settings.yml`dem Namen, und fügen Sie den folgenden Inhalt hinzu.
 
 ```text
 app_id: YOUR_APP_ID_HERE
@@ -14,10 +14,10 @@ authorize_endpoint: /oauth2/v2.0/authorize
 token_endpoint: /oauth2/v2.0/token
 ```
 
-Ersetzen `YOUR_APP_ID_HERE` Sie durch die Anwendungs-ID aus dem Anwendungs Registrierungs Portal, `YOUR_APP_SECRET_HERE` und ersetzen Sie es durch das von Ihnen generierte Kennwort.
+Ersetzen `YOUR_APP_ID_HERE` Sie durch die Anwendungs-ID aus dem Anwendungs Registrierungs Portal, `YOUR_APP_SECRET_HERE` und ersetzen Sie durch das Kennwort, das Sie generiert haben.
 
 > [!IMPORTANT]
-> Wenn Sie die Quellcodeverwaltung wie git verwenden, wäre es jetzt ein guter Zeitpunkt, um die `oauth_settings.yml` Datei aus der Quellcodeverwaltung auszuschließen, um versehentlich Ihre APP-ID und Ihr Kennwort zu verlieren.
+> Wenn Sie die Quellcodeverwaltung wie git verwenden, wäre es jetzt ein guter Zeitpunkt, die Datei `oauth_settings.yml` aus der Quellcodeverwaltung auszuschließen, damit versehentlich keine APP-ID und Ihr Kennwort verloren gehen.
 
 ## <a name="implement-sign-in"></a>Implementieren der Anmeldung
 
@@ -40,7 +40,7 @@ os.environ['OAUTHLIB_IGNORE_SCOPE_CHANGE'] = '1'
 
 # Load the oauth_settings.yml file
 stream = open('oauth_settings.yml', 'r')
-settings = yaml.load(stream)
+settings = yaml.load(stream, yaml.SafeLoader)
 authorize_url = '{0}{1}'.format(settings['authority'], settings['authorize_endpoint'])
 token_url = '{0}{1}'.format(settings['authority'], settings['token_endpoint'])
 
@@ -70,7 +70,7 @@ def get_token_from_code(callback_url, expected_state):
   return token
 ```
 
-Diese Datei enthält alle authentifizierungsbezogenen Methoden. Der `get_sign_in_url` generiert eine Autorisierungs-URL, `get_token_from_code` und die-Methode tauscht die Autorisierungs Antwort für ein Zugriffstoken aus.
+In dieser Datei werden alle authentifizierungsbezogenen Methoden gespeichert. Der `get_sign_in_url` generiert eine Autorisierungs-URL, `get_token_from_code` und die Methode tauscht die Autorisierungs Antwort für ein Zugriffstoken aus.
 
 Fügen Sie die `import` folgenden Anweisungen am Anfang von `./tutorial/views.py`hinzu.
 
@@ -79,7 +79,7 @@ from django.urls import reverse
 from tutorial.auth_helper import get_sign_in_url, get_token_from_code
 ```
 
-Fügen Sie nun eine Reihe neuer Ansichten in die `./tutorial/views.py` Datei ein.
+Fügen Sie nun ein paar neue Ansichten in die `./tutorial/views.py` Datei ein.
 
 ```python
 def sign_in(request):
@@ -102,30 +102,30 @@ def callback(request):
 
 Dadurch werden zwei neue Ansichten definiert `signin` : `callback`und.
 
-Die `signin` Aktion generiert die Azure AD SignIn-URL, speichert `state` den vom OAuth-Client generierten Wert und leitet den Browser dann an die Azure AD SignIn-Seite um.
+Durch `signin` die Aktion wird die Azure AD SignIn-URL generiert `state` , der vom OAuth-Client generierte Wert gespeichert und anschließend der Browser an die Azure AD SignIn-Seite umgeleitet.
 
-Die `callback` Aktion ist die Stelle, an die Azure nach Abschluss der Anmeldung umleitet. Durch diese Aktion wird sicher `state` gestellt, dass der Wert mit dem gespeicherten Wert übereinstimmt, und anschließend wird der von Azure gesendete Autorisierungscode verwendet, um ein Zugriffstoken anzufordern. Anschließend wird zurück zur Homepage mit dem Zugriffstoken im temporären Fehlerwert umgeleitet. Verwenden Sie diese, um zu überprüfen, ob unsere Anmeldung funktioniert, bevor Sie fortfahren. Bevor Sie testen, müssen Sie die Ansichten zu `./tutorial/urls.py`hinzufügen.
+In `callback` der Aktion wird Azure weitergeleitet, nachdem das SignIn abgeschlossen wurde. Durch diese Aktion wird sicher `state` gestellt, dass der Wert mit dem gespeicherten Wert übereinstimmt, und dann wird der von Azure gesendete Autorisierungscode verwendet, um ein Zugriffstoken anzufordern. Anschließend wird mit dem Zugriffstoken im temporären Fehlerwert zurück zur Startseite umgeleitet. Verwenden Sie diese, um zu überprüfen, ob unsere Anmeldung funktionsfähig ist, bevor Sie fortfahren. Bevor Sie testen, müssen Sie die Ansichten zu `./tutorial/urls.py`hinzufügen.
 
 ```python
 path('signin', views.sign_in, name='signin'),
 path('callback', views.callback, name='callback'),
 ```
 
-Ersetzen Sie `<a href="#" class="btn btn-primary btn-large">Click here to sign in</a>` die- `./tutorial/templates/tutorial/home.html` Reihe in durch Folgendes.
+Ersetzen Sie `<a href="#" class="btn btn-primary btn-large">Click here to sign in</a>` die- `./tutorial/templates/tutorial/home.html` Verbindung durch Folgendes.
 
 ```html
 <a href="{% url 'signin' %}" class="btn btn-primary btn-large">Click here to sign in</a>
 ```
 
-Ersetzen Sie `<a href="#" class="nav-link">Sign In</a>` die- `./tutorial/templates/tutorial/layout.html` Reihe in durch Folgendes.
+Ersetzen Sie `<a href="#" class="nav-link">Sign In</a>` die- `./tutorial/templates/tutorial/layout.html` Verbindung durch Folgendes.
 
 ```html
 <a href="{% url 'signin' %}" class="nav-link">Sign In</a>
 ```
 
-Starten Sie den Server, und `https://localhost:8000/tutorial`navigieren Sie zu. Klicken Sie auf die Anmeldeschaltfläche, und Sie sollten zu `https://login.microsoftonline.com`umgeleitet werden. Melden Sie sich mit Ihrem Microsoft-Konto an, und stimmen Sie den erforderlichen Berechtigungen zu. Der Browser leitet zur App um, wobei das Token angezeigt wird.
+Starten Sie den Server, und `https://localhost:8000/tutorial`navigieren Sie zu. Klicken Sie auf die Anmeldeschaltfläche, und Sie sollten zu `https://login.microsoftonline.com`umgeleitet werden. Melden Sie sich mit Ihrem Microsoft-Konto an, und stimmen Sie den angeforderten Berechtigungen zu. Der Browser wird an die APP umgeleitet, wobei das Token angezeigt wird.
 
-### <a name="get-user-details"></a>Benutzer Details abrufen
+### <a name="get-user-details"></a>Abrufen von Benutzer Details
 
 Erstellen Sie eine neue Datei im `./tutorial` Verzeichnis mit `graph_helper.py` dem Namen, und fügen Sie den folgenden Code hinzu.
 
@@ -142,9 +142,9 @@ def get_user(token):
   return user.json()
 ```
 
-Die `get_user` -Methode führt eine GET-Anforderung an den `/me` Microsoft Graph-Endpunkt aus, um das Benutzerprofil mithilfe des zuvor erworbenen Zugriffstokens abzurufen.
+Die `get_user` -Methode führt eine GET-Anforderung an den `/me` Microsoft Graph-Endpunkt aus, um das Profil des Benutzers mithilfe des zuvor erworbenen Zugriffstokens abzurufen.
 
-Aktualisieren Sie `callback` die- `./tutorial/views.py` Methode in, um das Benutzerprofil von Microsoft Graph abzurufen.
+Aktualisieren Sie `callback` die- `./tutorial/views.py` Methode in, um das Profil des Benutzers aus Microsoft Graph abzurufen.
 
 Fügen Sie zunächst die folgende `import` Anweisung am Anfang der Datei hinzu.
 
@@ -152,7 +152,7 @@ Fügen Sie zunächst die folgende `import` Anweisung am Anfang der Datei hinzu.
 from tutorial.graph_helper import get_user
 ```
 
-Ersetzen Sie `callback` die Methode durch den folgenden Code.
+Ersetzen Sie `callback` die-Methode durch den folgenden Code.
 
 ```python
 def callback(request):
@@ -173,7 +173,7 @@ Der neue Code Ruft die `get_user` Methode auf, um das Profil des Benutzers anzuf
 
 ## <a name="storing-the-tokens"></a>Speichern der Token
 
-Da Sie jetzt Tokens abrufen können, ist es an der Zeit, eine Möglichkeit zum Speichern in der APP zu implementieren. Da es sich um eine Beispiel-App handelt, speichern Sie Sie in der Sitzung. Eine echte APP würde eine zuverlässigere Secure Storage-Lösung wie eine Datenbank verwenden.
+Nachdem Sie nun Token erhalten können, ist es an der Zeit, eine Möglichkeit zum Speichern in der APP zu implementieren. Da es sich um eine Beispiel-App handelt, speichern Sie Sie aus Gründen der Einfachheit in der Sitzung. Eine reale APP würde eine zuverlässigere sichere Speicherlösung wie eine Datenbank verwenden.
 
 Fügen Sie die folgenden neuen Methoden `./tutorial/auth_helper.py`zu hinzu.
 
@@ -200,13 +200,13 @@ def remove_user_and_token(request):
     del request.session['user']
 ```
 
-Aktualisieren Sie dann die `callback` -Funktion `./tutorial/views.py` in, um die Token in der Sitzung zu speichern und zurück zur Hauptseite umzuleiten. Ersetzen Sie `from tutorial.auth_helper import get_sign_in_url, get_token_from_code` die-Reihe durch Folgendes.
+Aktualisieren Sie dann die `callback` -Funktion `./tutorial/views.py` in, um die Token in der Sitzung zu speichern und zur Hauptseite zurückzuleiten. Ersetzen Sie `from tutorial.auth_helper import get_sign_in_url, get_token_from_code` die-Verbindung durch Folgendes.
 
 ```python
 from tutorial.auth_helper import get_sign_in_url, get_token_from_code, store_token, store_user, remove_user_and_token, get_token
 ```
 
-Ersetzen Sie `callback` die Methode durch Folgendes.
+Ersetzen Sie `callback` die-Methode durch Folgendes.
 
 ```python
 def callback(request):
@@ -225,7 +225,7 @@ def callback(request):
   return HttpResponseRedirect(reverse('home'))
 ```
 
-## <a name="implement-sign-out"></a>Implementierung der Abmeldung
+## <a name="implement-sign-out"></a>Implementieren der Abmeldung
 
 Bevor Sie dieses neue Feature testen, fügen Sie eine Möglichkeit zum Abmelden hinzu. Fügen Sie eine `sign_out` neue Ansicht `./tutorial/views.py`in hinzu.
 
@@ -243,27 +243,27 @@ Fügen Sie nun diese Ansicht `./tutorial/urls.py`zu hinzu.
 path('signout', views.sign_out, name='signout'),
 ```
 
-Aktualisieren Sie **** den Link abmelden `./tutorial/templates/tutorial/layout.html` in, um diese neue Ansicht zu verwenden. Ersetzen Sie `<a href="#" class="dropdown-item">Sign Out</a>` die-Reihe durch Folgendes.
+Aktualisieren Sie **** den Link abmelden `./tutorial/templates/tutorial/layout.html` in, um diese neue Ansicht zu verwenden. Ersetzen Sie `<a href="#" class="dropdown-item">Sign Out</a>` die-Verbindung durch Folgendes.
 
 ```html
 <a href="{% url 'signout' %}" class="dropdown-item">Sign Out</a>
 ```
 
-Starten Sie den Server neu, und führen Sie den Anmeldevorgang durch. Sie sollten auf der Startseite zurückkehren, aber die Benutzeroberfläche sollte sich ändern, um anzugeben, dass Sie angemeldet sind.
+Starten Sie den Server neu, und fahren Sie mit dem Anmeldevorgang fort. Sie sollten wieder auf der Startseite enden, aber die Benutzeroberfläche sollte sich ändern, um anzugeben, dass Sie angemeldet sind.
 
-![Screenshot der Startseite nach der Anmeldung](./images/add-aad-auth-01.png)
+![Ein Screenshot der Startseite nach der Anmeldung](./images/add-aad-auth-01.png)
 
-Klicken Sie auf den Benutzer Avatar in der oberen rechten Ecke, **** um auf den Link abmelden zuzugreifen. Wenn **** Sie auf Abmelden klicken, wird die Sitzung zurückgesetzt, und Sie kehren zur Startseite.
+Klicken Sie in der oberen rechten Ecke auf den Avatar des Benutzers **** , um auf den Abmeldelink zuzugreifen. Durch **** klicken auf Abmelden wird die Sitzung zurückgesetzt, und Sie kehren zur Startseite zurück.
 
-![Screenshot des Dropdownmenüs mit dem Link "Abmelden"](./images/add-aad-auth-02.png)
+![Screenshot des Dropdownmenüs mit dem Link zum Abmelden](./images/add-aad-auth-02.png)
 
 ## <a name="refreshing-tokens"></a>Aktualisieren von Token
 
-Zu diesem Zeitpunkt verfügt Ihre Anwendung über ein Zugriffstoken, das in der `Authorization` Kopfzeile von API-aufrufen gesendet wird. Dies ist das Token, mit dem die APP auf Microsoft Graph im Namen des Benutzers zugreifen kann.
+Zu diesem Zeitpunkt verfügt Ihre Anwendung über ein Zugriffstoken, das in der `Authorization` Kopfzeile von API-aufrufen gesendet wird. Dies ist das Token, das es der App ermöglicht, im Namen des Benutzers auf Microsoft Graph zuzugreifen.
 
-Dieses Token ist jedoch kurzlebig. Das Token läuft eine Stunde nach der Ausgabe ab. An dieser Stelle wird das Aktualisierungstoken nützlich. Das Aktualisierungstoken ermöglicht der APP, ein neues Zugriffstoken anzufordern, ohne dass der Benutzer sich erneut anmelden muss. Aktualisieren Sie den Token-Verwaltungscode, um die Token-Aktualisierung zu implementieren.
+Dieses Token ist jedoch nur kurzlebig. Das Token läuft eine Stunde nach seiner Ausgabe ab. Hier wird das Aktualisierungstoken nützlich. Das Aktualisierungstoken ermöglicht der APP, ein neues Zugriffstoken anzufordern, ohne dass sich der Benutzer erneut anmelden muss. Aktualisieren Sie den Token-Verwaltungscode, um die Token-Aktualisierung zu implementieren.
 
-Ersetzen Sie die `get_token` vorhandene- `./tutorial/auth_helper.py` Methode mit dem folgenden.
+Ersetzen Sie die `get_token` vorhandene Methode `./tutorial/auth_helper.py` in durch Folgendes.
 
 ```python
 def get_token(request):
@@ -297,4 +297,4 @@ def get_token(request):
       return token
 ```
 
-Diese Methode überprüft zunächst, ob das Zugriffstoken abgelaufen ist oder in Kürze abläuft. Wenn dies der Fall ist, wird das Aktualisierungstoken zum Abrufen neuer Token verwendet, dann wird der Cache aktualisiert und das neue Zugriffstoken zurückgegeben.
+Diese Methode überprüft zunächst, ob das Zugriffstoken abgelaufen oder nahezu abläuft. Wenn dies der Fall ist, wird das Aktualisierungstoken verwendet, um neue Token abzurufen, dann wird der Cache aktualisiert und das neue Zugriffstoken zurückgegeben.

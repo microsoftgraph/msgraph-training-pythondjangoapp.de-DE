@@ -1,20 +1,20 @@
 <!-- markdownlint-disable MD002 MD041 -->
 
-In diesem Tutorial erfahren Sie, wie Sie eine python-django-Web-App erstellen, die die Microsoft Graph-API zum Abrufen von Kalenderinformationen für einen Benutzer verwendet.
+In diesem Lernprogramm erfahren Sie, wie Sie eine python django-Webanwendung erstellen, die die Microsoft Graph-API zum Abrufen von Kalenderinformationen für einen Benutzer verwendet.
 
 > [!TIP]
-> Wenn Sie das fertige Tutorial lieber herunterladen möchten, können Sie es auf zweierlei Weise herunterladen.
+> Wenn Sie das fertige Lernprogramm einfach herunterladen möchten, können Sie es auf zwei Arten herunterladen.
 >
 > - Laden Sie den [python-Schnellstart](https://developer.microsoft.com/graph/quick-start?platform=option-Python) herunter, um in wenigen Minuten Arbeitscode zu erhalten.
-> - Laden oder Klonen Sie das [GitHub-Repository](https://github.com/microsoftgraph/msgraph-training-pythondjangoapp).
+> - Laden Sie das [GitHub-Repository](https://github.com/microsoftgraph/msgraph-training-pythondjangoapp)herunter, oder Klonen Sie es.
 
 ## <a name="prerequisites"></a>Voraussetzungen
 
-Bevor Sie mit diesem Lernprogramm beginnen, sollten Sie [python](https://www.python.org/) (mit [PIP](https://pypi.org/project/pip/)) auf dem Entwicklungscomputer installiert haben. Wenn Sie nicht über python verfügen, besuchen Sie den vorherigen Link für Downloadoptionen.
+Bevor Sie mit diesem Lernprogramm beginnen, sollten Sie [python](https://www.python.org/) (mit [PIP](https://pypi.org/project/pip/)) auf Ihrem Entwicklungscomputer installiert haben. Wenn Sie nicht über python verfügen, besuchen Sie den vorherigen Link für Downloadoptionen.
 
 > [!NOTE]
-> Dieses Tutorial wurde mit Python-Version 3.7.0 und Django Version 2,2 geschrieben. Die Schritte in diesem Handbuch funktionieren möglicherweise mit anderen Versionen, jedoch nicht getestet.
+> Dieses Tutorial wurde mit Python Version 3.7.0 und Django Version 2.2.2 geschrieben. Die Schritte in diesem Leitfaden funktionieren möglicherweise mit anderen Versionen, jedoch nicht getestet.
 
 ## <a name="feedback"></a>Feedback
 
-Feedback zu diesem Tutorial finden Sie im GitHub- [Repository](https://github.com/microsoftgraph/msgraph-training-pythondjangoapp).
+Geben Sie Feedback zu diesem Lernprogramm im [GitHub-Repository](https://github.com/microsoftgraph/msgraph-training-pythondjangoapp)an.

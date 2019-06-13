@@ -1,24 +1,24 @@
 <!-- markdownlint-disable MD002 MD041 -->
 
-In dieser Übung verwenden Sie [Django](https://www.djangoproject.com/) , um eine Web-App zu erstellen. Wenn Sie Django noch nicht installiert haben, können Sie es über die Befehlszeilenschnittstelle (CLI) mit dem folgenden Befehl installieren.
+In dieser Übung werden Sie mit [Django](https://www.djangoproject.com/) eine Webanwendung erstellen. Wenn Django nicht bereits installiert ist, können Sie es über die Befehlszeilenschnittstelle (CLI) mit dem folgenden Befehl installieren.
 
 ```Shell
-pip install Django
+pip install Django=2.2.2
 ```
 
-Öffnen Sie Ihre CLI, navigieren Sie zu einem Verzeichnis, in dem Sie die Berechtigung zum Erstellen von Dateien haben, und führen Sie den folgenden Befehl aus, um eine neue Django-APP zu erstellen.
+Öffnen Sie die CLI, navigieren Sie zu einem Verzeichnis, in dem Sie Berechtigungen zum Erstellen von Dateien haben, und führen Sie den folgenden Befehl aus, um eine neue Django-APP zu erstellen.
 
 ```Shell
-django-admin.py startproject graph_tutorial
+django-admin startproject graph_tutorial
 ```
 
-Django erstellt ein neues Verzeichnis mit `graph_tutorial` dem Namen und Gerüst eine Django-Web-App. Navigieren Sie zu diesem neuen Verzeichnis, und geben Sie den folgenden Befehl ein, um einen lokalen Webserver zu starten.
+Django erstellt ein neues Verzeichnis namens `graph_tutorial` und ein Gerüst für eine Django-Webanwendung. Navigieren Sie zu diesem neuen Verzeichnis, und geben Sie den folgenden Befehl ein, um einen lokalen Webserver zu starten.
 
 ```Shell
 python manage.py runserver
 ```
 
-Öffnen Sie Ihren Browser und navigieren Sie zu `http://localhost:8000`. Wenn alles funktioniert, wird eine Django-Willkommensseite angezeigt. Wenn Sie das nicht sehen, überprüfen Sie den [Django-Leitfaden "erste Schritte](https://www.djangoproject.com/start/)".
+Öffnen Sie Ihren Browser und navigieren Sie zu `http://localhost:8000`. Wenn alles funktioniert, wird eine Django-Willkommensseite angezeigt. Wenn dies nicht der Fall ist, überprüfen Sie das [Django-Handbuch für erste Schritte](https://www.djangoproject.com/start/).
 
 Nachdem Sie das Projekt überprüft haben, fügen Sie dem Projekt eine APP hinzu. Führen Sie den folgenden Befehl in der CLI aus.
 
@@ -82,25 +82,25 @@ def home(request):
   return HttpResponse("Welcome to the tutorial.")
 ```
 
-Speichern Sie alle Änderungen, und starten Sie den Server neu. Navigieren Sie `http://localhost:8000/tutorial`zu. Sie sollten`Welcome to the tutorial.`
+Speichern Sie alle Änderungen, und starten Sie den Server neu. Navigieren Sie `http://localhost:8000/tutorial`zu. Sie sollten sehen`Welcome to the tutorial.`
 
-Bevor Sie fortfahren, installieren Sie einige zusätzliche Bibliotheken, die Sie später verwenden werden:
+Installieren Sie vor dem Verschieben einige zusätzliche Bibliotheken, die Sie später verwenden werden:
 
-- [Requests-OAuthlib: OAuth für Menschen](https://requests-oauthlib.readthedocs.io/en/latest/) zur Behandlung von Anmelde-und OAuth-Token-Flüssen und zum Aufrufen von Microsoft Graph.
-- [](https://pyyaml.org/wiki/PyYAMLDocumentation) Für das Laden der Konfiguration aus einer YAML-Datei.
-- [python-dateutil](https://pypi.org/project/python-dateutil/) zum Analysieren von von Microsoft Graph zurückgegebenen ISO 8601-Datumszeichenfolgen.
+- [Anforderungen-OAuthlib: OAuth für Menschen](https://requests-oauthlib.readthedocs.io/en/latest/) zum Verarbeiten von Anmelde-und OAuth-Token-Flows sowie zum tätigen von Anrufen an Microsoft Graph.
+- [Autoyaml](https://pyyaml.org/wiki/PyYAMLDocumentation) zum Laden der Konfiguration aus einer YAML-Datei.
+- [python-dateutil](https://pypi.org/project/python-dateutil/) zum Analysieren von ISO 8601-Datumszeichenfolgen, die von Microsoft Graph zurückgegeben werden.
 
 Führen Sie den folgenden Befehl in der CLI aus.
 
 ```Shell
-pip install requests_oauthlib
-pip install pyyaml
-pip install python-dateutil
+pip install requests_oauthlib==1.2.0
+pip install pyyaml==5.1
+pip install python-dateutil==2.8.0
 ```
 
 ## <a name="design-the-app"></a>Entwerfen der APP
 
-Erstellen Sie zunächst ein Vorlagenverzeichnis, und definieren Sie ein globales Layout für die app. Erstellen Sie ein neues Verzeichnis im `./tutorial` Verzeichnis namens `templates`. Erstellen Sie `templates` im Verzeichnis ein neues Verzeichnis mit dem `tutorial`Namen. Erstellen Sie schließlich eine neue Datei in diesem Verzeichnis mit `layout.html`dem Namen. Der relative Pfad vom Stamm des Projekts sollte sein `./tutorial/templates/tutorial/layout.html`. Fügen Sie in der Datei den folgenden Code hinzu.
+Erstellen Sie zunächst ein Vorlagenverzeichnis, und definieren Sie ein globales Layout für die app. Erstellen Sie ein neues Verzeichnis im `./tutorial` Verzeichnis mit `templates`dem Namen. Erstellen Sie `templates` im Verzeichnis ein neues Verzeichnis mit dem `tutorial`Namen. Erstellen Sie schließlich eine neue Datei in diesem Verzeichnis mit `layout.html`dem Namen. Der relative Pfad aus dem Stamm des Projekts sollte sein `./tutorial/templates/tutorial/layout.html`. Fügen Sie den folgenden Code in die Datei ein.
 
 ```html
 <!DOCTYPE html>
@@ -188,9 +188,9 @@ Erstellen Sie zunächst ein Vorlagenverzeichnis, und definieren Sie ein globales
 </html>
 ```
 
-Dieser Code fügt [Bootstrap](http://getbootstrap.com/) für einfache Styling und [Font awesome](https://fontawesome.com/) für einige einfache Symbole. Außerdem wird ein globales Layout mit einer NAV-Leiste definiert.
+Dieser Code fügt [Bootstrap](http://getbootstrap.com/) für einfaches Styling und [Font awesome](https://fontawesome.com/) für einige einfache Symbole hinzu. Außerdem wird ein globales Layout mit einer Navigationsleiste definiert.
 
-Erstellen Sie nun ein neues Verzeichnis im `./tutorial` Verzeichnis namens `static`. Erstellen Sie `static` im Verzeichnis ein neues Verzeichnis mit dem `tutorial`Namen. Erstellen Sie schließlich eine neue Datei in diesem Verzeichnis mit `app.css`dem Namen. Der relative Pfad vom Stamm des Projekts sollte sein `./tutorial/static/tutorial/app.css`. Fügen Sie in der Datei den folgenden Code hinzu.
+Erstellen Sie nun ein neues Verzeichnis im `./tutorial` Verzeichnis mit `static`dem Namen. Erstellen Sie `static` im Verzeichnis ein neues Verzeichnis mit dem `tutorial`Namen. Erstellen Sie schließlich eine neue Datei in diesem Verzeichnis mit `app.css`dem Namen. Der relative Pfad aus dem Stamm des Projekts sollte sein `./tutorial/static/tutorial/app.css`. Fügen Sie den folgenden Code in die Datei ein.
 
 ```css
 body {
@@ -204,7 +204,7 @@ body {
 }
 ```
 
-Erstellen Sie als nächstes eine Vorlage für die Homepage, die das Layout verwendet. Erstellen Sie eine neue Datei im `./tutorial/templates/tutorial` Verzeichnis mit `home.html` dem Namen, und fügen Sie den folgenden Code hinzu.
+Erstellen Sie als nächstes eine Vorlage für die Startseite, die das Layout verwendet. Erstellen Sie eine neue Datei im `./tutorial/templates/tutorial` Verzeichnis mit `home.html` dem Namen, und fügen Sie den folgenden Code hinzu.
 
 ```html
 {% extends "tutorial/layout.html" %}
@@ -251,4 +251,4 @@ def home(request):
 
 Speichern Sie alle Änderungen, und starten Sie den Server neu. Nun sollte die APP sehr unterschiedlich aussehen.
 
-![Screenshot der neu gestalteten Homepage](./images/create-app-01.png)
+![Screenshot der neu gestalteten Startseite](./images/create-app-01.png)
