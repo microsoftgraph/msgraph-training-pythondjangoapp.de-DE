@@ -3,7 +3,7 @@
 In dieser Übung werden Sie mit [Django](https://www.djangoproject.com/) eine Webanwendung erstellen. Wenn Django nicht bereits installiert ist, können Sie es über die Befehlszeilenschnittstelle (CLI) mit dem folgenden Befehl installieren.
 
 ```Shell
-pip install Django=2.2.2
+pip install Django=2.2.5
 ```
 
 Öffnen Sie die CLI, navigieren Sie zu einem Verzeichnis, in dem Sie Berechtigungen zum Erstellen von Dateien haben, und führen Sie den folgenden Befehl aus, um eine neue Django-APP zu erstellen.
