@@ -1,17 +1,17 @@
 <!-- markdownlint-disable MD002 MD041 -->
 
-In dieser Übung erweitern Sie die Anwendung aus der vorherigen Übung, um die Authentifizierung mit Azure AD zu unterstützen. Dies ist erforderlich, um das erforderliche OAuth-Zugriffstoken zum Aufrufen von Microsoft Graph zu erhalten. In diesem Schritt integrieren Sie die Requests [-OAuthlib-](https://requests-oauthlib.readthedocs.io/en/latest/) Bibliothek in die Anwendung.
+In dieser Übung erweitern Sie die Anwendung aus der vorherigen Übung, um die Authentifizierung mit Azure AD zu unterstützen. Dies ist erforderlich, um das erforderliche OAuth-Zugriffstoken zum Aufrufen von Microsoft Graph zu erhalten. In diesem Schritt integrieren Sie die [Requests-OAuthlib-](https://requests-oauthlib.readthedocs.io/en/latest/) Bibliothek in die Anwendung.
 
 Erstellen Sie eine neue Datei im Stammverzeichnis des Projekts mit `oauth_settings.yml`dem Namen, und fügen Sie den folgenden Inhalt hinzu.
 
 ```text
-app_id: YOUR_APP_ID_HERE
-app_secret: YOUR_APP_PASSWORD_HERE
-redirect: http://localhost:8000/tutorial/callback
-scopes: openid profile offline_access user.read calendars.read
-authority: https://login.microsoftonline.com/common
-authorize_endpoint: /oauth2/v2.0/authorize
-token_endpoint: /oauth2/v2.0/token
+app_id: "YOUR_APP_ID_HERE"
+app_secret: "YOUR_APP_PASSWORD_HERE"
+redirect: "http://localhost:8000/tutorial/callback"
+scopes: "openid profile offline_access user.read calendars.read"
+authority: "https://login.microsoftonline.com/common"
+authorize_endpoint: "/oauth2/v2.0/authorize"
+token_endpoint: "/oauth2/v2.0/token"
 ```
 
 Ersetzen `YOUR_APP_ID_HERE` Sie durch die Anwendungs-ID aus dem Anwendungs Registrierungs Portal, `YOUR_APP_SECRET_HERE` und ersetzen Sie durch das Kennwort, das Sie generiert haben.
@@ -243,7 +243,7 @@ Fügen Sie nun diese Ansicht `./tutorial/urls.py`zu hinzu.
 path('signout', views.sign_out, name='signout'),
 ```
 
-Aktualisieren Sie **** den Link abmelden `./tutorial/templates/tutorial/layout.html` in, um diese neue Ansicht zu verwenden. Ersetzen Sie `<a href="#" class="dropdown-item">Sign Out</a>` die-Verbindung durch Folgendes.
+Aktualisieren Sie den Link **Abmelden** in `./tutorial/templates/tutorial/layout.html` , um diese neue Ansicht zu verwenden. Ersetzen Sie `<a href="#" class="dropdown-item">Sign Out</a>` die-Verbindung durch Folgendes.
 
 ```html
 <a href="{% url 'signout' %}" class="dropdown-item">Sign Out</a>
@@ -253,7 +253,7 @@ Starten Sie den Server neu, und fahren Sie mit dem Anmeldevorgang fort. Sie soll
 
 ![Ein Screenshot der Startseite nach der Anmeldung](./images/add-aad-auth-01.png)
 
-Klicken Sie in der oberen rechten Ecke auf den Avatar des Benutzers **** , um auf den Abmeldelink zuzugreifen. Durch **** klicken auf Abmelden wird die Sitzung zurückgesetzt, und Sie kehren zur Startseite zurück.
+Klicken Sie in der oberen rechten Ecke auf den Avatar des Benutzers, um auf den **Abmelde** Link zuzugreifen. Durch Klicken auf **Abmelden** wird die Sitzung zurückgesetzt, und Sie kehren zur Startseite zurück.
 
 ![Screenshot des Dropdownmenüs mit dem Link zum Abmelden](./images/add-aad-auth-02.png)
 

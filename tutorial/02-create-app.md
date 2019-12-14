@@ -3,7 +3,7 @@
 In dieser Übung werden Sie mit [Django](https://www.djangoproject.com/) eine Webanwendung erstellen. Wenn Django nicht bereits installiert ist, können Sie es über die Befehlszeilenschnittstelle (CLI) mit dem folgenden Befehl installieren.
 
 ```Shell
-pip install Django=2.2.5
+pip install Django==3.0
 ```
 
 Öffnen Sie die CLI, navigieren Sie zu einem Verzeichnis, in dem Sie Berechtigungen zum Erstellen von Dateien haben, und führen Sie den folgenden Befehl aus, um eine neue Django-APP zu erstellen.
@@ -75,6 +75,7 @@ urlpatterns = [
 Fügen Sie der `tutorials` APP schließlich eine temporäre Ansicht hinzu, um zu überprüfen, ob das URL-Routing funktioniert. Öffnen Sie die Datei `./tutorial/views.py`, und fügen Sie den folgenden Code hinzu.
 
 ```python
+from django.shortcuts import render
 from django.http import HttpResponse, HttpResponseRedirect
 
 def home(request):
@@ -93,9 +94,9 @@ Installieren Sie vor dem Verschieben einige zusätzliche Bibliotheken, die Sie s
 Führen Sie den folgenden Befehl in der CLI aus.
 
 ```Shell
-pip install requests_oauthlib==1.2.0
-pip install pyyaml==5.1
-pip install python-dateutil==2.8.0
+pip install requests_oauthlib==1.3.0
+pip install pyyaml==5.2
+pip install python-dateutil==2.8.1
 ```
 
 ## <a name="design-the-app"></a>Entwerfen der APP
