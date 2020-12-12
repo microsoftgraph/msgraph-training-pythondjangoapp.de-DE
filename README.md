@@ -6,7 +6,7 @@ In diesem Modul erfahren Sie, wie Sie mit Microsoft Graph zusammenarbeiten, um a
 
 In dieser Übungseinheit erstellen Sie eine python django-Webanwendung mit dem Azure AD v2-Authentifizierungs Endpunkt für den Zugriff auf Daten in Office 365 mithilfe von Microsoft Graph.
 
-- [Python-Microsoft Graph-Lernprogramm](https://docs.microsoft.com/graph/training/python-tutorial)
+- [Python-Microsoft Graph-Lernprogramm](https://docs.microsoft.com/graph/tutorials/python)
 
 ## <a name="completed-sample"></a>Abgeschlossenes Beispiel
 
@@ -14,7 +14,7 @@ Wenn Sie das fertige Beispiel nur generieren möchten, indem Sie dieser Übungse
 
 - [Fertig gestelltes Projekt](demo)
 
-## <a name="disclaimer"></a>Verzichtserklärung
+## <a name="disclaimer"></a>Haftungsausschluss
 
 **Dieser Code wird ohne jegliche ausdrückliche oder implizite *Gewährleistung bereit* gestellt, einschließlich impliziter Garantien für die Eignung für einen bestimmten Zweck, die Marktgängigkeit oder die Nichtverletzung.**
 
